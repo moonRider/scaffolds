@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "project template for `pnpm dlx makes`",
   "type": "module",
-  "author": "moonRider<solar.pom@gmail.com>"
+  "author": "moonRider<solar.pom@gmail.com>",
+  "dependencies": {
+    "sort-package-json": "3.6.1"
+  }
 }
-

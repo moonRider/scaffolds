@@ -1,3 +1,8 @@
+import { readFile, writeFile } from 'node:fs/promises'
+import { join } from 'node:path'
+
+import sortPackageJson from 'sort-package-json'
+
 const packageManagers = ['pnpm', 'yarn', 'bun', 'npm']
 
 function selectedPackageManager(features) {
@@ -8,6 +13,18 @@ function installCommand(packageManager) {
   return packageManager === 'npm'
     ? 'npm install'
     : `${packageManager} install`
+}
+
+async function sortProjectPackageJson({ here, name }) {
+  const projectPath = here ? process.cwd() : join(process.cwd(), name)
+  const packageJsonPath = join(projectPath, 'package.json')
+  const packageJson = await readFile(packageJsonPath, 'utf8')
+  const sortedPackageJson = sortPackageJson(packageJson)
+
+  await writeFile(
+    packageJsonPath,
+    sortedPackageJson.endsWith('\n') ? sortedPackageJson : `${sortedPackageJson}\n`,
+  )
 }
 
 export default async function ({
@@ -38,12 +55,13 @@ export default async function ({
 
   await run('git', ['init', '-b', 'main'])
   await run('chmod', ['+x', '.husky/pre-commit', '.husky/commit-msg'])
+  await sortProjectPackageJson({ here, name: properties.name })
 
   if (shouldInstall) {
     await run(packageManager, ['install'])
   }
 
-  console.log(c.green(`[makes] Project ${properties.name} has been initialized.`))
+  console.log(c.cyan(`[makes] Project ${properties.name} has been initialized.`))
   console.log(c.cyan('follow next steps to get started.'))
 
   if (!here) {
