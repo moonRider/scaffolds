@@ -43,7 +43,8 @@ export default async function ({
     await run(packageManager, ['install'])
   }
 
-  console.log(`\n${c.green('项目已初始化完成，按以下步骤开始：')}`)
+  console.log(c.green(`[makes] Project ${properties.name} has been initialized.`))
+  console.log(c.cyan('follow next steps to get started.'))
 
   if (!here) {
     console.log(`  cd ${properties.name}`)
