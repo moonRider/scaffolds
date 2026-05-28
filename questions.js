@@ -5,6 +5,10 @@ export default [
       {
         value: 'nextjs',
         title: 'Nextjs'
+      },
+      {
+        value: 'ctv-tool',
+        title: 'ctv component',
       }
     ]
   },
