@@ -1,0 +1,12 @@
+# @if pnpm
+pnpm exec lint-staged
+# @endif
+# @if yarn
+yarn lint-staged
+# @endif
+# @if bun
+bunx lint-staged
+# @endif
+# @if npm
+npx lint-staged
+# @endif

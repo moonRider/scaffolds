@@ -1,0 +1,8 @@
+{
+  "name": "scaffolds",
+  "version": "1.0.0",
+  "description": "project template for `pnpm dlx makes`",
+  "type": "module",
+  "author": "moonRider<solar.pom@gmail.com>"
+}
+

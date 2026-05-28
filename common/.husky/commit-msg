@@ -1,0 +1,12 @@
+# @if pnpm
+pnpm exec commitlint --edit "$1"
+# @endif
+# @if yarn
+yarn commitlint --edit "$1"
+# @endif
+# @if bun
+bunx commitlint --edit "$1"
+# @endif
+# @if npm
+npx commitlint --edit "$1"
+# @endif

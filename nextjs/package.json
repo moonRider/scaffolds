@@ -1,0 +1,51 @@
+{
+  "scripts": {
+    "dev": "bun --bun next dev",
+    "build": "bun --bun next build",
+    "start": "bun --bun next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "db:new": "dbmate new",
+    "db:up": "dbmate up",
+    "db:down": "dbmate down",
+    "db:dump": "dbmate dump",
+    "db:status": "dbmate status",
+    "db:drop": "dbmate drop",
+    "db:types": "kysely-codegen --out-file server/db/types.ts",
+    "db:migrate": "bun run db:up && bun run db:types",
+    "db:reset": "bun run db:drop && bun run db:migrate",
+    "test": "bun test",
+    "test:db:up": "dbmate -e TEST_DATABASE_URL up",
+    "test:db:down": "dbmate -e TEST_DATABASE_URL down",
+    "test:db:status": "dbmate -e TEST_DATABASE_URL status",
+    "test:db:reset": "dbmate -e TEST_DATABASE_URL drop && bun run test:db:up",
+    "test:prepare": "bun run test:db:reset",
+    "test:ci": "bun run test:prepare && bun test"
+  },
+  "dependencies": {
+    "kysely": "^0.29.2",
+    "next": "16.2.6",
+    "pg": "^8.21.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/pg": "^8.20.0",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "dbmate": "^2.33.0",
+    "eslint-config-next": "16.2.6",
+    "kysely-codegen": "^0.20.0",
+    "tailwindcss": "^4"
+  },
+  "ignoreScripts": [
+    "sharp",
+    "unrs-resolver"
+  ],
+  "trustedDependencies": [
+    "sharp",
+    "unrs-resolver"
+  ]
+}
