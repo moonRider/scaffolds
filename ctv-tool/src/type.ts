@@ -1,18 +1,3 @@
-type IStyleConfig = any;
-
-interface IInfo {
-  name: string;
-  id: string;
-  creater: string;
-  createTime: string;
-  updateTime: string;
-  isPublish: boolean;
-  spaceId: string;
-  // 预览图
-  previewImageAddress?: string;
-  keys: List<string[]>;
-}
-
 // 默认配置信息,所有组件都有，无需按照schema进行配置
 interface IConfig {
   width: number;
@@ -104,10 +89,48 @@ export interface IMapDataHandler {
   description: string;
 }
 
+type SchemaTypeKey =
+  | 'tabPane'
+  | 'module'
+  | 'textStyle'
+  | 'lineStyle'
+  | 'radio'
+  | 'colorThemeStyle'
+  | 'paddingStyle'
+  | 'borderRadius'
+  | 'gridBlockStyle'
+  | 'tabButtonStyle'
+  | 'multipleInput'
+  | 'number'
+  | 'colorpicker'
+  | 'checkbox'
+  | 'group'
+  | 'multipleNumber'
+  | 'select'
+  | 'switch'
+  | 'text'
+  | 'heatColor'
+  | 'fields'
+  | 'uniquePoint'
+  | 'img'
+  | 'globalMap'
+  | 'file'
+  | 'textarea'
+  | 'array'
+  | 'mapInterval'
+  | 'numberSelect'
+  | 'cover'
+  | 'divider'
+  | 'picture'
+  | 'customCard'
+  | 'formatDateRange'
+  | 'themeSelect'
+  | 'link'
+  | 'arcgisUpdater'
 
 interface IStyle {
   name: string;
-  type: string;
+  type: SchemaTypeKey;
   children?: Record<string, IStyle>;
   value?: any;
   [propName: string]: any;

@@ -17,30 +17,57 @@ export default defineConfig([{
   output:
     [
       {
-        format: 'umd',
-        name: 'component',
-        file: './dist/bundle.umd.js',
-        sourcemap: 'inline',
+        // umd 格式的文件必须要具备哦，目前宿主只支持 umd 和 iife 规范
+        // 推荐使用 iife
+        format: 'iife',
+        // 挂载的全局变量名，支持 namespace（通过 namespace.xxx)
+        // 推荐使用 CustomComponents 作为 namespace
+        name: 'CustomComponents.test',
+        file: './dist/bundle.iife.js',
+        sourcemap: isDev ? 'inline' : 'hidden',
+        /**
+         * 需要宿主提供的依赖，其中 React 必须由宿主提供，否则数据响应会丢失
+         * 宿主提供了
+         * [依赖名]:[全局变量名]
+         * react: React
+         * react-dom: ReactDOM
+         * styled-components: styled
+         * axios: axios
+         * echarts: echarts
+         * lodash: _
+         * classnames: classnames
+         * zustand: zustand
+         * crypto-js: CryptoJS
+         */
         globals: {
           react: 'React',
-          'styled-components': 'styled',
-          echarts: 'echarts',
+        }
+      },
+      {
+        format: 'umd',
+        name: 'CustomComponents.test',
+        file: './dist/bundle.umd.js',
+        sourcemap: isDev ? 'hidden' : 'hidden',
+        globals: {
+          react: 'React',
         }
       },
       {
         format: 'esm',
         file: './dist/bundle.esm.js',
-        sourcemap: true
+        sourcemap: isDev ? 'inline' : 'hidden'
       }
     ],
     plugins: [
       terser(),
-      resolve(),
-      commonjs(),
-      typescript(),
       clear({
         targets: ['dist']
       }),
+      resolve(),
+      typescript({
+        include: ['**/*.ts', '**/*.tsx'],
+      }),
+      commonjs(),
       isDev && serve({
         open: false,
         contentBase: 'dist',
@@ -51,19 +78,9 @@ export default defineConfig([{
         },
       }),
     ],
+    // 记得这里也要声明哪些依赖是外部依赖
     external: [
       'react',
-      'react-dom',
-      'styled-components',
-      'zustand',
-      'echarts',
-      'antd',
-      'lodash',
-      'zustand/middleware/immer',
-      'axios',
-      'crypto-js',
-      'moment',
-      'classnames',
     ],
   },
 ]);
