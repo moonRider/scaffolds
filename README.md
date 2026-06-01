@@ -36,7 +36,7 @@ bunx makes /path/to/scaffolds my-app
 
 模板会询问：
 
-1. 项目类型，目前支持 `Nextjs`。
+1. 项目类型，目前支持 `Nextjs`、`Bun Server`、`ctv component`。
 2. 包管理器，可选 `pnpm`、`yarn`、`bun`、`npm`。
 3. 生成完成后是否立即使用前面选择的包管理器安装依赖。
 
@@ -69,5 +69,7 @@ pnpm run dev
 
 - `common/`：所有项目都会合并的通用文件。
 - `nextjs/`：Next.js 项目模板。
+- `bun-server/`：Bun + ElysiaJS + dbmate + Kysely + TypeScript 服务端模板，内置 OpenAPI 文档。
+- `ctv-tool/`：Rollup React 组件模板。
 - `questions.js`：makes 交互问题。
 - `after.js`：项目生成后的初始化脚本。

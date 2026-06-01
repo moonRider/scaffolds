@@ -7,6 +7,10 @@ export default [
         title: 'Nextjs'
       },
       {
+        value: 'bun-server',
+        title: 'Bun Server'
+      },
+      {
         value: 'ctv-tool',
         title: 'ctv component',
       }

@@ -1,12 +1,12 @@
 # @if pnpm
-pnpm exec lint-staged
+pnpm run lint
 # @endif
 # @if yarn
-yarn lint-staged
+yarn lint
 # @endif
 # @if bun
-bunx lint-staged
+bun run lint
 # @endif
 # @if npm
-npx lint-staged
+npm run lint
 # @endif
