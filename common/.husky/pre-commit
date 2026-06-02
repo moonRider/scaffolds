@@ -1,12 +1,1 @@
-# @if pnpm
 pnpm run lint
-# @endif
-# @if yarn
-yarn lint
-# @endif
-# @if bun
-bun run lint
-# @endif
-# @if npm
-npm run lint
-# @endif

@@ -4,6 +4,18 @@ import { join } from 'node:path'
 import sortPackageJson from 'sort-package-json'
 
 const packageManagers = ['pnpm', 'yarn', 'bun', 'npm']
+const preCommitCommands = {
+  pnpm: 'pnpm run lint',
+  yarn: 'yarn lint',
+  bun: 'bun run lint',
+  npm: 'npm run lint',
+}
+const commitMsgCommands = {
+  pnpm: 'pnpm exec commitlint --edit "$1"',
+  yarn: 'yarn commitlint --edit "$1"',
+  bun: 'bunx commitlint --edit "$1"',
+  npm: 'npx commitlint --edit "$1"',
+}
 
 function selectedPackageManager(features) {
   return packageManagers.find(packageManager => features.includes(packageManager))
@@ -24,6 +36,19 @@ async function sortProjectPackageJson({ here, name }) {
   await writeFile(
     packageJsonPath,
     sortedPackageJson.endsWith('\n') ? sortedPackageJson : `${sortedPackageJson}\n`,
+  )
+}
+
+async function writeProjectGitHooks({ here, name, packageManager }) {
+  const projectPath = here ? process.cwd() : join(process.cwd(), name)
+
+  await writeFile(
+    join(projectPath, '.husky/pre-commit'),
+    `${preCommitCommands[packageManager]}\n`,
+  )
+  await writeFile(
+    join(projectPath, '.husky/commit-msg'),
+    `${commitMsgCommands[packageManager]}\n`,
   )
 }
 
@@ -53,9 +78,10 @@ export default async function ({
     })
   }
 
+  await writeProjectGitHooks({ here, name: properties.name, packageManager })
+  await sortProjectPackageJson({ here, name: properties.name })
   await run('git', ['init', '-b', 'main'])
   await run('chmod', ['+x', '.husky/pre-commit', '.husky/commit-msg'])
-  await sortProjectPackageJson({ here, name: properties.name })
 
   if (shouldInstall) {
     await run(packageManager, ['install'])
