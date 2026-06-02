@@ -1,5 +1,3 @@
-// packages/lib/rollup.config.js
-
 import resolve from '@rollup/plugin-node-resolve';
 import { defineConfig } from 'rollup';
 import clear from 'rollup-plugin-clear';
@@ -10,6 +8,7 @@ import commonjs from '@rollup/plugin-commonjs';
 
 
 const isDev = process.env.NODE_ENV !== 'production';
+const sourcemap = isDev ? 'inline' : 'hidden'
 
 export default defineConfig([{
   input: './src/index.tsx',
@@ -17,14 +16,13 @@ export default defineConfig([{
   output:
     [
       {
-        // umd 格式的文件必须要具备哦，目前宿主只支持 umd 和 iife 规范
-        // 推荐使用 iife
-        format: 'iife',
+        // 目前宿主只支持 umd 和 iife 规范
+        format: 'umd',
         // 挂载的全局变量名，支持 namespace（通过 namespace.xxx)
         // 推荐使用 CustomComponents 作为 namespace
-        name: 'CustomComponents.test',
-        file: './dist/bundle.iife.js',
-        sourcemap: isDev ? 'inline' : 'hidden',
+        name: 'CustomComponents./* @eval PascalCase(name) */',
+        file: './dist/bundle.umd.js',
+        sourcemap,
         /**
          * 需要宿主提供的依赖，其中 React 必须由宿主提供，否则数据响应会丢失
          * 宿主提供了
@@ -41,25 +39,13 @@ export default defineConfig([{
          */
         globals: {
           react: 'React',
+          'react-dom': 'ReactDOM',
+          'styled-components': 'styled'
         }
-      },
-      {
-        format: 'umd',
-        name: 'CustomComponents.test',
-        file: './dist/bundle.umd.js',
-        sourcemap: isDev ? 'hidden' : 'hidden',
-        globals: {
-          react: 'React',
-        }
-      },
-      {
-        format: 'esm',
-        file: './dist/bundle.esm.js',
-        sourcemap: isDev ? 'inline' : 'hidden'
       }
     ],
     plugins: [
-      terser(),
+      isDev ? null : terser(),
       clear({
         targets: ['dist']
       }),
@@ -81,6 +67,8 @@ export default defineConfig([{
     // 记得这里也要声明哪些依赖是外部依赖
     external: [
       'react',
+      'react-dom',
+      'styled-components',
     ],
   },
 ]);
