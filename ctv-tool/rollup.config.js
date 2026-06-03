@@ -1,7 +1,8 @@
 import resolve from '@rollup/plugin-node-resolve';
 import { defineConfig } from 'rollup';
 import clear from 'rollup-plugin-clear';
-import { terser } from 'rollup-plugin-terser';
+import { terser } from '@rollup/plugin-terser';
+import url from '@rollup/plugin-url';
 import serve from 'rollup-plugin-serve';
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from '@rollup/plugin-commonjs';
@@ -39,8 +40,6 @@ export default defineConfig([{
          */
         globals: {
           react: 'React',
-          'react-dom': 'ReactDOM',
-          'styled-components': 'styled'
         }
       }
     ],
@@ -52,6 +51,12 @@ export default defineConfig([{
       resolve(),
       typescript({
         include: ['**/*.ts', '**/*.tsx'],
+      }),
+      url({
+        limit: 8 * 1024,
+        include: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
+        emitFiles: true,
+        fileName: 'assets/[name]-[hash][extname]',
       }),
       commonjs(),
       isDev && serve({
@@ -67,8 +72,6 @@ export default defineConfig([{
     // 记得这里也要声明哪些依赖是外部依赖
     external: [
       'react',
-      'react-dom',
-      'styled-components',
     ],
   },
 ]);
